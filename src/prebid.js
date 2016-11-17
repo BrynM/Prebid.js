@@ -289,6 +289,13 @@ function setRenderSize(doc, width, height) {
   }
 }
 
+// Frame sandboxing added by Imgur
+function setFrameSandbox(doc) {
+  if (doc.defaultView && doc.defaultView.frameElement) {
+    doc.defaultView.frameElement.sandbox = 'allow-forms allow-scripts allow-same-origin';
+  }
+}
+
 //////////////////////////////////
 //                              //
 //    Start Public APIs         //
@@ -449,6 +456,8 @@ $$PREBID_GLOBAL$$.renderAd = function (doc, id) {
           doc.write('<IFRAME SRC="' + url + '" FRAMEBORDER="0" SCROLLING="no" MARGINHEIGHT="0" MARGINWIDTH="0" TOPMARGIN="0" LEFTMARGIN="0" ALLOWTRANSPARENCY="true" WIDTH="' + width + '" HEIGHT="' + height + '"></IFRAME>');
           doc.close();
           setRenderSize(doc, width, height);
+          // Frame sandboxing added by Imgur
+          setFrameSandbox(doc);
         } else {
           utils.logError('Error trying to write ad. No ad for bid response id: ' + id);
         }
